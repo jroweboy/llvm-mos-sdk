@@ -24,7 +24,10 @@ pal_update_nmi:
 
 	ldx #0
 	stx PAL_UPDATE
-
+    ; Force horizontal write for palette
+    lda PPUCTRL_VAR
+	and #$fb
+    sta PPUCTRL
 	lda #$3f
 	sta PPUADDR
 	stx PPUADDR
@@ -57,6 +60,9 @@ pal_update_nmi:
 	sta PPUDATA
 	.endr
 	.endr
+    ; Restore orignal PPUCTRL value
+	lda PPUCTRL_VAR
+    sta PPUCTRL
 .LskipUpd:
 
 
